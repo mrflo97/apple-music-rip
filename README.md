@@ -30,7 +30,7 @@ This project serves as a graphical frontend for the powerful command-line tools 
 1.  **Clone the repository:**
     ```bash
     git clone https://github.com/HARAJIT05/apple-music-rip.git
-    cd alac-rip
+    cd apple-music-rip
     ```
 
 2.  **Run the setup script:**
