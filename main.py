@@ -150,7 +150,9 @@ def setup_wrapper():
         env = os.environ.copy()
         env["HOME"] = str(deps_dir)
         
-        subprocess.run(["cmake", ".."], cwd=build_dir, env=env, check=True)
+        # Upstream CMakeLists.txt resolves the NDK as ${CMAKE_CURRENT_SOURCE_DIR}/android-ndk-r23b
+        # but we cache the NDK under deps/ to keep the wrapper source clean.
+        subprocess.run(["cmake", f"-DANDROID_NDK_PATH={ndk_dir}", ".."], cwd=build_dir, env=env, check=True)
         # Get core count for parallel build
         nproc = subprocess.check_output(["nproc"]).decode().strip()
         subprocess.run(["make", f"-j{nproc}"], cwd=build_dir, env=env, check=True)
