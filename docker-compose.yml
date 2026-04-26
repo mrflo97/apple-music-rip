@@ -1,0 +1,28 @@
+services:
+  apple-music-rip:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: apple-music-rip
+    container_name: apple-music-rip
+    platform: linux/amd64
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      # Wrapper binary + Android rootfs (built on first run).
+      - wrapper:/app/wrapper
+      # apple-music-downloader repo + config.yaml + downloaded music.
+      # Swap for a bind mount (e.g. ./downloads:/app/apple-music-downloader)
+      # if you want the files directly on the host.
+      - amd:/app/apple-music-downloader
+      # Android NDK r23b cache (~1 GB) — keep across rebuilds.
+      - deps:/app/deps
+      # Saved login credentials live at /app/.credentials inside the container.
+      # If you want them to survive `docker rm`, bind-mount a host file:
+      #   - ./.credentials:/app/.credentials
+
+volumes:
+  wrapper:
+  amd:
+  deps:
