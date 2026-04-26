@@ -185,7 +185,10 @@ def setup_wrapper():
         sys.exit(1)
 
 def clone_amd_repo():
-    if AMD_DIR.exists():
+    # AMD_DIR itself can exist as an empty mount point (e.g. when running in
+    # Docker with /app/apple-music-downloader as a volume) — only skip if the
+    # repo has actually been cloned into it.
+    if (AMD_DIR / ".git").exists():
         print("ℹ️ Apple Music Downloader already exists, skipping clone")
         return
 
